@@ -25,6 +25,9 @@ if (isset($_POST['submit'])) {
         // Check if the password matches
         if ($password === $row["password"]) {
           $_SESSION['loggedin'] = true;
+          $_SESSION['user_id'] = $row["id"];
+          $_SESSION['username'] = $username;
+
         header("Location: index.php?header=after");
         exit();
         } else {

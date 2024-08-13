@@ -9,7 +9,7 @@ if (!$con) {
 
 
     // Inserting user data into the database
-    $query = "INSERT INTO products (user_id, username, product_pic, price, product_title, type)VALUES (1, 'john_doe', 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp', 149.99, 'Sample Product', 'sell')";
+    $query = "INSERT INTO products (user_id, username, product_pic, price, product_title, type)VALUES (3, 'john_doeu', 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp', 160, 'Sampble Product', 'buy')";
     $result = mysqli_query($con, $query);
 
     if (!$result) {
