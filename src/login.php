@@ -10,26 +10,28 @@ if ($con) {
 }
 
 if (isset($_POST['submit'])) {
-
     // Getting user data
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Retrieving user data from database to verify
+    // Retrieving user data from the database to verify
     $query = "SELECT * FROM users WHERE username = '$username'";
     $result = mysqli_query($con, $query);
 
     if ($result && mysqli_num_rows($result) > 0) {
-      $row = mysqli_fetch_assoc($result);
+        $row = mysqli_fetch_assoc($result);
 
         // Check if the password matches
         if ($password === $row["password"]) {
-          $_SESSION['loggedin'] = true;
-          $_SESSION['user_id'] = $row["id"];
-          $_SESSION['username'] = $username;
-
-        header("Location: index.php?header=after");
-        exit();
+            // Set session variables
+            $_SESSION['loggedin'] = true;
+            $_SESSION['user_id'] = $row["id"]; // Storing the user_id
+            $_SESSION['username'] = $username;
+            echo "<pre>";
+            print_r($_SESSION);
+            echo "</pre>";
+            header("Location: index.php?header=after");
+            exit();
         } else {
             echo "Invalid password";
         }
@@ -40,7 +42,6 @@ if (isset($_POST['submit'])) {
 
 // Close the connection
 mysqli_close($con);
-
 ?>
 
 <!DOCTYPE html>
@@ -48,11 +49,21 @@ mysqli_close($con);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>User Profile</title>
     <link rel="stylesheet" href="./output.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
+
+<?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true): ?>
+    <div class="profile-info">
+        <h1>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
+        <p>Your User ID is: <?php echo htmlspecialchars($_SESSION['user_id']); ?></p>
+    </div>
+<?php else: ?>
+    <p>You are not logged in. Please <a href="login.php">login</a>.</p>
+<?php endif; ?>
+
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
     <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company">
@@ -94,3 +105,4 @@ mysqli_close($con);
 
 </body>
 </html>
+

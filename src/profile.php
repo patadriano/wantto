@@ -1,3 +1,9 @@
+
+
+<?php 
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -117,7 +123,7 @@
                                             $con = mysqli_connect('localhost', 'root', '', 'proj_wantto');
 
                                             // Query to fetch products for sale
-                                            $query = "SELECT * FROM products WHERE type = 'sell'";
+                                            $query = "SELECT * FROM products WHERE username= '{$_SESSION['username']}'";
                                             $result = mysqli_query($con, $query);
 
                                             if (!$result) {
@@ -161,7 +167,7 @@
 
     include 'addproduct-popup.php'; 
 
-?>
+     ?>
     <script>
     function toggleModal(modalID) {
       document.getElementById(modalID).classList.toggle("hidden");
