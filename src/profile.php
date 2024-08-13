@@ -2,6 +2,10 @@
 
 <?php 
 session_start();
+if(isset($_POST['logout'])){
+    session_destroy();
+    $_SESSION['loggedin'] = false;
+  }
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +22,7 @@ session_start();
     <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
       <!---------------------- logo ------------------------->
       <div class="flex lg:flex-1">
-        <a href="#" class="-m-1.5 p-1.5">
+        <a href="index.php" class="-m-1.5 p-1.5">
           <span class="sr-only">Your Company</span>
             <svg class="icon-cart" viewBox="0 0 24.38 30.52" height="30.52" width="24.38" xmlns="http://www.w3.org/2000/svg">
               <title>icon-cart</title>
@@ -35,11 +39,11 @@ session_start();
           </svg>
         </button>
       </div>
+      
       <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-        <a href="login.php" class="text-sm font-semibold leading-6 text-gray-900">Profile</a>
-      </div>
-      <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-        <a href="login.php" class="text-sm font-semibold leading-6 text-gray-900">Log out<span aria-hidden="true">&rarr;</span></a>
+      <form action="login.php" method="POST">
+           <button type="submit" name="logout" class="bg-red-500 text-white font-bold py-2 px-4 rounded">Logout</button>
+        </form>
       </div>
     </nav>
     <!-- Mobile menu, show/hide based on menu open state. -->
@@ -95,8 +99,26 @@ session_start();
                                     <img src="https://randomuser.me/api/portraits/men/94.jpg" class="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0">
 
                                     </img>
-                                    <h1 class="text-xl font-bold">John Doe</h1>
-                                    <p class="text-gray-700">Software Developer</p>
+                                 
+                                        <?php
+
+                                            $con = mysqli_connect('localhost', 'root', '', 'proj_wantto');
+
+                                            // Query to fetch products for sale
+                                            $query = "SELECT * FROM products WHERE username= '{$_SESSION['username']}'";
+                                            $result = mysqli_query($con, $query);
+
+                                            if (!$result) {
+                                                die("Query failed: " . mysqli_error($con));
+                                            }
+
+                                            echo '<h1 class="text-xl font-bold">' . htmlspecialchars($_SESSION['username']) . '</h1>';
+
+                                        ?>
+                                    
+                                    
+                                    
+                                    <!-- <p class="text-gray-700">Software Developer</p> -->
                                     <div class="mt-6 flex flex-wrap gap-4 justify-center">
                                         <a href="#" onclick="toggleModal('modal-id')" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"> + Post Add</a>
                                         <a href="#" class="bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 px-4 rounded">Edit Profile</a>
@@ -120,15 +142,6 @@ session_start();
                                         <div id="buy-div" class="grid grid-cols-4 gap-12 p-4 rounded-lg">
                                         <?php 
                                 
-                                            $con = mysqli_connect('localhost', 'root', '', 'proj_wantto');
-
-                                            // Query to fetch products for sale
-                                            $query = "SELECT * FROM products WHERE username= '{$_SESSION['username']}'";
-                                            $result = mysqli_query($con, $query);
-
-                                            if (!$result) {
-                                                die("Query failed: " . mysqli_error($con));
-                                            }
 
                                             // Loop through the results
                                             while ($row = mysqli_fetch_assoc($result)) {

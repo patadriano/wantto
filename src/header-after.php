@@ -1,3 +1,11 @@
+<?php
+
+
+if(isset($_POST['logout'])){
+  $_SESSION['loggedin'] = false;
+  session_destroy();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +39,9 @@
   </div>
   <div class="hidden lg:flex lg:flex-1 lg:justify-end space-x-10">
     <a href="profile.php" class="text-sm font-semibold leading-6 text-gray-900">Profile</a>
-    <a href="login.php" class="text-sm font-semibold leading-6 text-gray-900">Log out<span aria-hidden="true">&rarr;</span></a>
+    <form action="login.php" method="POST">
+       <button type="submit" name="logout" class="bg-red-500 text-white font-bold py-2 px-4 rounded">Logout</button>
+    </form>
   </div>
 </nav>
 
