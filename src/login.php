@@ -1,47 +1,14 @@
 <?php
-session_start();
-// Connecting to the database
-$con = mysqli_connect('localhost', 'root', '', 'proj_wantto');
 
-if ($con) {
-    echo "Connected successfully<br>";
-} else {
-    die("Connection failed: " . mysqli_connect_error());
-}
+$username = $_POST['username'];
+$password = $_POST['password'];
 
+// Check if the submitted credentials match the stored ones
 if (isset($_POST['submit'])) {
-    // Getting user data
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-    // Retrieving user data from the database to verify
-    $query = "SELECT * FROM users WHERE username = '$username'";
-    $result = mysqli_query($con, $query);
-
-    if ($result && mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
-
-        // Check if the password matches
-        if ($password === $row["password"]) {
-            // Set session variables
-            $_SESSION['loggedin'] = true;
-            $_SESSION['user_id'] = $row["id"]; // Storing the user_id
-            $_SESSION['username'] = $username;
-            echo "<pre>";
-            print_r($_SESSION);
-            echo "</pre>";
-            header("Location: index.php?header=after");
-            exit();
-        } else {
-            echo "Invalid password";
-        }
-    } else {
-        echo "No user found with that username";
-    }
+    echo "Login successful. Welcome, $username!";
+} else {
+    echo "Invalid username or password. Please try again.";
 }
-
-// Close the connection
-mysqli_close($con);
 ?>
 
 <!DOCTYPE html>
@@ -49,21 +16,9 @@ mysqli_close($con);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-    <link rel="stylesheet" href="./output.css">
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <title>Document</title>
 </head>
 <body>
-
-<?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true): ?>
-    <div class="profile-info">
-        <h1>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
-        <p>Your User ID is: <?php echo htmlspecialchars($_SESSION['user_id']); ?></p>
-    </div>
-<?php else: ?>
-    <p>You are not logged in. Please <a href="login.php">login</a>.</p>
-<?php endif; ?>
-
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
     <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company">
@@ -71,11 +26,11 @@ mysqli_close($con);
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form class="space-y-6" action="login.php" method="POST">
+    <form class="space-y-6" action="#" method="POST">
       <div>
-        <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
+        <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
         <div class="mt-2">
-          <input id="username" name="username" type="username" autocomplete="username" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+          <input id="email" name="email" type="email" autocomplete="email" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
         </div>
       </div>
 
@@ -92,7 +47,7 @@ mysqli_close($con);
       </div>
 
       <div>
-        <button type="submit" name="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign in</button>
+        <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign in</button>
       </div>
     </form>
 
@@ -102,7 +57,5 @@ mysqli_close($con);
     </p>
   </div>
 </div>
-
 </body>
 </html>
-
