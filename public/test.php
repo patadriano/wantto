@@ -9,13 +9,18 @@ if (!$con) {
 
 
     // Inserting user data into the database
-    $query = "INSERT INTO products (user_id, username, product_pic, price, product_title, type)VALUES (3, 'john_doeu', 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp', 160, 'Sampble Product', 'buy')";
+    $query = "ALTER TABLE users
+ADD contact varchar(100)";
+
     $result = mysqli_query($con, $query);
 
     if (!$result) {
         die("Insertion failed: " . mysqli_error($con));
     }
 
-// Close the connection
+
+
+
+    // Close the connection
 mysqli_close($con);
 ?>
